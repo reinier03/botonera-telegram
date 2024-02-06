@@ -84,7 +84,7 @@ def guardar_variables():
 
 
 try:
-  print(f"La direccion del servidor es: {request.host_url}")
+  request.host_url
 except:
   app = Flask(__name__)
   
@@ -1479,7 +1479,7 @@ def flask():
 
 
 try:
-  print(f"La direccion del servidor es: {request.host_url}")
+  request.host_url
 except:
   hilo_flask=threading.Thread(name="hilo_flask", target=flask)
   hilo_flask.start()
