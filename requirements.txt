@@ -1,0 +1,7 @@
+telebot==0.0.5
+pyTelegramBotAPI==4.13.0
+Flask==3.0.0
+dill==0.3.7
+waitress==2.1.2
+requests==2.31.0
+discord-easy-commands==0.1.1
