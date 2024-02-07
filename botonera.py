@@ -15,74 +15,75 @@ from waitress import serve
 local_ip = ""
 hora_eliminacion_botonera=False
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-conexion = sqlite3.connect("Botonera_Canales", check_same_thread=False)
-cursor = conexion.cursor()
 try:
-  cursor.execute('CREATE TABLE Canales (ID_Canal INTEGER, ID_Admin INTEGER)')
-except Exception as e:
-  if str(e) == "table Canales already exists":
-    pass
-del_hilo = ""
-#-------------------Variables a utilizar en el codigo-------------------------------
-reima = 1413725506
-bot = telebot.TeleBot(os.environ["token"])
-dic = {}
-hora_publicacion = []
-tiempo_de_espera_botonera = 10800  #Por defecto, tiene asignado 3 horas
-ejecutar_hilo = False
-hilo_publicaciones = ""
-modo_reparacion = False
-mensajes_a_eliminar = []
-publicaciones = False
-tiempo_eliminacion_botonera = False
-hora_eliminacion_botonera = []
-mensajes_a_eliminar_globales = []
+  os.chdir(os.path.dirname(os.path.abspath(__file__)))
+  conexion = sqlite3.connect("Botonera_Canales", check_same_thread=False)
+  cursor = conexion.cursor()
+  try:
+    cursor.execute('CREATE TABLE Canales (ID_Canal INTEGER, ID_Admin INTEGER)')
+  except Exception as e:
+    if str(e) == "table Canales already exists":
+      pass
+  del_hilo = ""
+  #-------------------Variables a utilizar en el codigo-------------------------------
+  reima = 1413725506
+  bot = telebot.TeleBot(os.environ["token"])
+  dic = {}
+  hora_publicacion = []
+  tiempo_de_espera_botonera = 10800  #Por defecto, tiene asignado 3 horas
+  ejecutar_hilo = False
+  hilo_publicaciones = ""
+  modo_reparacion = False
+  mensajes_a_eliminar = []
+  publicaciones = False
+  tiempo_eliminacion_botonera = False
+  hora_eliminacion_botonera = []
+  mensajes_a_eliminar_globales = []
 
-#--------------------------------------------------------------------------
-server_address = ""
-
-
-
-
-#CARGAR las variables si existe ya un archivo
-if os.path.isfile("variables"):
-  with open("variables", "rb") as archivo:
-    variables_cargadas = dill.load(archivo)
-
-    for var_name, var_value in variables_cargadas.items():
-      globals()[var_name] = var_value
+  #--------------------------------------------------------------------------
+  server_address = ""
 
 
-def guardar_variables():
-  global mensajes_a_eliminar_globales
-  diccionario_copia = []
-  if len(mensajes_a_eliminar_globales) > 30:
-    for e, i in enumerate(mensajes_a_eliminar_globales, start=1):
-      if e == 31:
-        break
-      diccionario_copia.append(mensajes_a_eliminar_globales[-e])
-    mensajes_a_eliminar_globales = diccionario_copia.copy()
-    del diccionario_copia
-
-  with open("variables", "wb") as archivo:
-    dict1 = {
-        "dic": dic,
-        "hora_publicacion": hora_publicacion,
-        "tiempo_de_espera_botonera": tiempo_de_espera_botonera,
-        "ejecutar_hilo": ejecutar_hilo,
-        "hilo_publicaciones": hilo_publicaciones,
-        "modo_reparacion": modo_reparacion,
-        "mensajes_a_eliminar": mensajes_a_eliminar,
-        "publicaciones": publicaciones,
-        "tiempo_eliminacion_botonera": tiempo_eliminacion_botonera,
-        "hora_eliminacion_botonera": hora_eliminacion_botonera,
-        "mensajes_a_eliminar_globales": mensajes_a_eliminar_globales
-    }
-    dill.dump(dict1, archivo)
 
 
-try:
+  #CARGAR las variables si existe ya un archivo
+  if os.path.isfile("variables"):
+    with open("variables", "rb") as archivo:
+      variables_cargadas = dill.load(archivo)
+
+      for var_name, var_value in variables_cargadas.items():
+        globals()[var_name] = var_value
+
+
+  def guardar_variables():
+    global mensajes_a_eliminar_globales
+    diccionario_copia = []
+    if len(mensajes_a_eliminar_globales) > 30:
+      for e, i in enumerate(mensajes_a_eliminar_globales, start=1):
+        if e == 31:
+          break
+        diccionario_copia.append(mensajes_a_eliminar_globales[-e])
+      mensajes_a_eliminar_globales = diccionario_copia.copy()
+      del diccionario_copia
+
+    with open("variables", "wb") as archivo:
+      dict1 = {
+          "dic": dic,
+          "hora_publicacion": hora_publicacion,
+          "tiempo_de_espera_botonera": tiempo_de_espera_botonera,
+          "ejecutar_hilo": ejecutar_hilo,
+          "hilo_publicaciones": hilo_publicaciones,
+          "modo_reparacion": modo_reparacion,
+          "mensajes_a_eliminar": mensajes_a_eliminar,
+          "publicaciones": publicaciones,
+          "tiempo_eliminacion_botonera": tiempo_eliminacion_botonera,
+          "hora_eliminacion_botonera": hora_eliminacion_botonera,
+          "mensajes_a_eliminar_globales": mensajes_a_eliminar_globales
+      }
+      dill.dump(dict1, archivo)
+
+
+
   try:
     request.host_url
   except:
