@@ -505,6 +505,8 @@ try:
                 reply_markup=botonera)
             try:
               bot.pin_chat_message(int(canal), msg.message_id, disable_notification=True)
+              time.sleep(3)
+              bot.delete_message(int(canal), msg.message_id+1)
             except:
               pass
             mensajes_a_eliminar.append((canal, msg.message_id))
