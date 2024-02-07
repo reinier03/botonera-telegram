@@ -92,6 +92,22 @@ except:
   def index():
     return f'¡Hola! Esta es la dirección local del host: {request.host_url}'
 
+def flask():
+  bot.remove_webhook()
+  time.sleep(1)
+  app.run(host="0.0.0.0", port=5000)
+
+
+
+
+
+try:
+  request.host_url
+except:
+  hilo_flask=threading.Thread(name="hilo_flask", target=flask)
+  hilo_flask.start()
+
+
 
 # def actualizar():
 #     global mensajes_a_eliminar
@@ -1469,20 +1485,6 @@ def mensajes_al_chat(message):
 
 
 
-def flask():
-  bot.remove_webhook()
-  time.sleep(1)
-  app.run(host="0.0.0.0", port=5000)
-
-
-
-
-
-try:
-  request.host_url
-except:
-  hilo_flask=threading.Thread(name="hilo_flask", target=flask)
-  hilo_flask.start()
 
 
 
