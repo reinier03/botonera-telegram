@@ -82,97 +82,97 @@ def guardar_variables():
     dill.dump(dict1, archivo)
 
 
-
 try:
-  request.host_url
-except:
-  app = Flask(__name__)
-  
-  @app.route('/', methods=['GET'])
-  def index():
-    return 'OK', 200
+  try:
+    request.host_url
+  except:
+    app = Flask(__name__)
+    
+    @app.route('/', methods=['GET'])
+    def index():
+      return 'OK', 200
 
-def flask():
-  app.run(host="0.0.0.0", port=5000)
-
-
-
-
-
-try:
-  request.host_url
-except:
-  hilo_flask=threading.Thread(name="hilo_flask", target=flask)
-  hilo_flask.start()
+  def flask():
+    app.run(host="0.0.0.0", port=5000)
 
 
 
-# def actualizar():
-#     global mensajes_a_eliminar
-#     global modo_reparacion
-#     global hilo_publicaciones
-#     global ejecutar_hilo
-#     global tiempo_de_espera_botonera
-#     global hora_publicacion
-#     global dic
-#     global publicaciones
-#     with open("archivo_extraible.py", "w") as archivo:
-#         archivo.seek(0)
-#         archivo.truncate()
-#         archivo.write(f"""
-#                       mensajes_a_eliminar={mensajes_a_eliminar}
-#                       modo_reparacion={modo_reparacion}
-#                       hilo_publicaciones={hilo_publicaciones}
-#                       ejecutar_hilo={ejecutar_hilo}
-#                       tiempo_de_espera_botonera={tiempo_de_espera_botonera}
-#                       hora_publicacion={hora_publicacion}
-#                       dic={dic}
-#                       publicaciones={publicaciones}
-#                       """)
 
-# try:
-#     with open("contador_exe.txt", "r") as archivo:
-#         archivo.seek(0)
-#         lista=archivo.readlines()
-#         if lista==[1]:
-#             actualizar()
-#             mensajes_a_eliminar=archivo_extraible.mensajes_a_eliminar
-#             modo_reparacion=archivo_extraible.modo_reparacion
-#             hilo_publicaciones=archivo_extraible.hilo_publicaciones
-#             ejecutar_hilo=archivo_extraible.ejecutar_hilo
-#             tiempo_de_espera_botonera=archivo_extraible.tiempo_de_espera_botonera
-#             hora_publicacion=archivo_extraible.hora_publicacion
-#             dic=archivo_extraible.dic
 
-# except:
-#     with open("contador_exe.txt", "w") as archivo:
-#         archivo.seek()
-#         archivo.write("1")
+  try:
+    request.host_url
+  except:
+    hilo_flask=threading.Thread(name="hilo_flask", target=flask)
+    hilo_flask.start()
 
-bot.send_message(reima, "Estoy online bitch >:)")
 
-OS = ""
 
-if os.name == "nt":
-  OS = '\\'
-else:
-  OS = "//"
+  # def actualizar():
+  #     global mensajes_a_eliminar
+  #     global modo_reparacion
+  #     global hilo_publicaciones
+  #     global ejecutar_hilo
+  #     global tiempo_de_espera_botonera
+  #     global hora_publicacion
+  #     global dic
+  #     global publicaciones
+  #     with open("archivo_extraible.py", "w") as archivo:
+  #         archivo.seek(0)
+  #         archivo.truncate()
+  #         archivo.write(f"""
+  #                       mensajes_a_eliminar={mensajes_a_eliminar}
+  #                       modo_reparacion={modo_reparacion}
+  #                       hilo_publicaciones={hilo_publicaciones}
+  #                       ejecutar_hilo={ejecutar_hilo}
+  #                       tiempo_de_espera_botonera={tiempo_de_espera_botonera}
+  #                       hora_publicacion={hora_publicacion}
+  #                       dic={dic}
+  #                       publicaciones={publicaciones}
+  #                       """)
 
-try:
-  foto_lastHope = open(
-      f"{os.path.dirname(os.path.abspath(__file__))}{OS}Last_Hope.jpg", 'rb')
+  # try:
+  #     with open("contador_exe.txt", "r") as archivo:
+  #         archivo.seek(0)
+  #         lista=archivo.readlines()
+  #         if lista==[1]:
+  #             actualizar()
+  #             mensajes_a_eliminar=archivo_extraible.mensajes_a_eliminar
+  #             modo_reparacion=archivo_extraible.modo_reparacion
+  #             hilo_publicaciones=archivo_extraible.hilo_publicaciones
+  #             ejecutar_hilo=archivo_extraible.ejecutar_hilo
+  #             tiempo_de_espera_botonera=archivo_extraible.tiempo_de_espera_botonera
+  #             hora_publicacion=archivo_extraible.hora_publicacion
+  #             dic=archivo_extraible.dic
 
-except:
-  pass
+  # except:
+  #     with open("contador_exe.txt", "w") as archivo:
+  #         archivo.seek()
+  #         archivo.write("1")
 
-def funcion_reparacion(message):
-  bot.send_message(
-      message.chat.id,
-      "🚨🚧Bot en Modo Construcción🚧🚨\n\nLo siento tigre, al parecer algo estalló en mi y ahora me ESTÁN reparando :( \n\n Vuelve luego a ver si ya me recuperé y seguir con las botoneras"
-  )
-  return
+  bot.send_message(reima, "Estoy online bitch >:)")
 
-try:
+  OS = ""
+
+  if os.name == "nt":
+    OS = '\\'
+  else:
+    OS = "//"
+
+  try:
+    foto_lastHope = open(
+        f"{os.path.dirname(os.path.abspath(__file__))}{OS}Last_Hope.jpg", 'rb')
+
+  except:
+    pass
+
+  def funcion_reparacion(message):
+    bot.send_message(
+        message.chat.id,
+        "🚨🚧Bot en Modo Construcción🚧🚨\n\nLo siento tigre, al parecer algo estalló en mi y ahora me ESTÁN reparando :( \n\n Vuelve luego a ver si ya me recuperé y seguir con las botoneras"
+    )
+    return
+
+
   # except:
   #     def recibir_foto_lastHope(message):
   #         global foto_lastHope
