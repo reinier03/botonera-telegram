@@ -435,46 +435,55 @@ try:
         for linea in lista_canales:
           canal = linea[0]
           administrador = linea[1]
+          if administrador==reima:
+            continue
           try:
             bot.get_chat(canal).title
             member = bot.get_chat_member(chat_id=canal, user_id=bot.user.id)
           except Exception as e:
             if "chat not found" in str(e):
-              bot.send_message(reima, f"Fuí expulsado del canal {linea[0]}\n\nLo eliminaré de la botonera")
+              bot.send_message(reima, f"Fuí expulsado del canal @{bot.get_chat(linea[0]).username}\n\nLo eliminaré de la botonera")
               cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={linea[0]}')
               conexion.commit()
               try:
-                  bot.send_message(administrador, "He eliminado tu canal de la botonera >:( Por haberme sacado")
+                  bot.send_message(administrador, f"He eliminado tu canal @{bot.get_chat(canal).username} de la botonera >:( Por haberme sacado\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo")
               except:
                   pass
+            
+            elif member.status=="left":
+              bot.send_message(reima, f"Al parecer me han eliminado del canal: @{bot.get_chat(canal).username}, procedo a eliminarlo")
+              try:
+                bot.send_message(administrador, f"Al parecer me han eliminado del canal: @{bot.get_chat(canal).username}\nEliminaré dicho canal de la botonera\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo")
+              except:
+                bot.send_message(reima, f"Al parecer el administrador del canal: @{bot.get_chat(canal).username}, me ha bloqueado, informaselo: @{bot.get_chat(administrador).username}")
+              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={linea[0]}')
+              conexion.commit()
               
             elif "bot was kicked from the channel chat" in str(e):
               bot.send_message(
                   reima,
-                  f"Fuí expulsado del canal   {linea[0]}\n\nLo eliminaré de la botonera"
+                  f"Fuí expulsado del canal @{bot.get_chat(linea[0]).username}\n\nLo eliminaré de la botonera"
               )
               cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={linea[0]}')
               conexion.commit()
               try:
                 bot.send_message(
                     linea[1],
-                    "He eliminado tu canal de la botonera\n\n>:D POR EXPULSARME MARICO"
+                    f"He eliminado tu canal @{bot.get_chat(canal).username} de la botonera\n\n>:D POR EXPULSARME MARICO\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo"
                 )
-                continue
               except:
                 continue
             elif not member.status == 'administrator' and str(administrador) != str(1413725506):
                 cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
                 conexion.commit()
-                bot.send_message(reima,
-                f"Se ha eliminado el canal {bot.get_chat(canal).username} por no dejarme como administrador >:(")
+                bot.send_message(reima, f"Se ha eliminado el canal @{bot.get_chat(canal).username} por no dejarme como administrador >:(")
                 
                 bot.send_message(
                     administrador,
-                    f"<u>ATENCIÓN</u>:\n Se ha eliminado el canal {bot.get_chat(canal).username} por no dejarme como administrador >:(\n\nPara ingresar de nuevo el canal en la botonera escriba /ingresar",
+                    f"<u>ATENCIÓN</u>:\n Se ha eliminado el canal @{bot.get_chat(canal).username} por no dejarme como administrador >:(\n\nPara ingresar de nuevo el canal en la botonera escriba /ingresar",
                     parse_mode="html")
             else:
-              bot.send_message(reima, f"Ha ocurrido un error con el canal {canal}:\n\n{e}\n\nProcedo a eliminarlo")
+              bot.send_message(reima, f"Ha ocurrido un error con el canal @{bot.get_chat(canal).username}:\n\n{e}\n\nProcedo a eliminarlo\nInformale a su administrador: @{bot.get_chat(administrador).username}")
               cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={linea[0]}')
               conexion.commit()
 
@@ -521,8 +530,6 @@ try:
                     f"OYE ESTÚPIDA!\n\nEste <a href='https://t.me/{bot.get_chat(canal).username}'>canal</a> tuyo no me deja mandar la botonera porque no tengo permisos para publicar! <b>Lo dejaré ahí</b>, porque eres su dueño pero MUEVE EL CULO!",
                     parse_mode="html")
                 continue
-              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
-              conexion.commit()
               try:
                 bot.send_message(
                     admin,
@@ -532,17 +539,45 @@ try:
                             "Ir a tu Canal",
                             url=f"https://t.me/{bot.get_chat(canal).username}")),
                     parse_mode="html")
+                cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+                conexion.commit()
               except Exception as e:
-                bot.send_message(reima, f"Excepcion al enviar un mensaje: \n{e}")
+                pass
               bot.send_message(
                   reima,
                   f"<b>Atención</b>\n\nHe eliminado el canal: @{bot.get_chat(canal).username} y su admin: @{bot.get_chat(admin).username}, por no dejarme permisos de publicación allí",
                   parse_mode="html")
+              
+            elif "bot is not a member of the channel chat" in str(e):
+
+              bot.send_message(reima, f"El bot ha sido eliminado de @{bot.get_chat(canal).username} y su admin: @{bot.get_chat(admin).username} voy a eliminarlo de la lista")
+              try:
+                bot.send_message(admin, f"El canal @{bot.get_chat(canal).username} ha sido eliminado de la botonera por haberme expulsado del canal, para volverlo a unir escribeme /ingresar \n\n:)")
+              except:
+                bot.send_message(reima, f"Por alguna razón el admin del canal @{bot.get_chat(canal).username} me tiene bloqueado, informale que ha sido eliminado de la botonera: @{bot.get_chat(admin).username}")
+                
+              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+              conexion.commit()
+              continue
+              
+            elif bot.get_chat_member(canal, bot.user.id).status=='left':
+              bot.send_message(reima, f"Me expulsaron de @{bot.get_chat(canal).username}, lo eliminaré de la botonera")
+              try:
+                bot.send_message(administrador, f"Su canal @{bot.get_chat(canal).username}, ha sido eliminado de la botonera por haberme expulsado\n\nPara Introducirlo nuevamente agregueme como administrador e ingrese aquí /ingresar \n\nTe estaré esperando :)")
+              except:
+                bot.send_message(reima, f"Por alguna razón el admin del canal @{bot.get_chat(canal).username} me tiene bloqueado, informale que ha sido eliminado de la botonera: @{bot.get_chat(admin).username}")
+              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+              conexion.commit()
+              continue
+            
             else:
               bot.send_message(
                   reima,
-                  f"Excepcion al enviar el mensaje a {bot.get_chat(canal).username}: \n{e}"
-              )
+                  f"Excepcion al enviar el mensaje a @{bot.get_chat(canal).username}: \n{e}\n\nEl canal fué eliminado de la botonera\nNotifícale al admin de dicho canal, el cual es @{bot.get_chat(admin).username}")
+              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+              conexion.commit()
+              continue
+              
 
         conexion.commit()
         foto_LastBotonera.seek(0)
@@ -639,7 +674,6 @@ try:
     elif call.data == "Parar bucle":
       global publicaciones
       global hora_publicacion
-      global hilo
       if publicaciones == False:
         return bot.send_message(
             call.from_user.id,
@@ -1358,6 +1392,9 @@ try:
     botonera = InlineKeyboardMarkup(row_width=2)
     #Primeramente, tengo que asegurarme que el bot tenga permisos para publicar en el canal
     cursor = conexion.cursor()
+    
+    #Ahora voy a comprobar si no me sacaron de los canales
+    
     cursor.execute('SELECT * FROM Canales')
     lista_canales = cursor.fetchall()
     for linea in lista_canales:
@@ -1365,17 +1402,17 @@ try:
       administrador = linea[1]
       try:
         bot.get_chat(canal)
-        member = bot.get_chat_member(chat_id=canal, user_id=bot.user.id)
-      except Exception as e:
-        if "chat not found" in str(e):
-          bot.send_message(reima, f"Me han eliminado de un canal, iré a notificarle a su administrador y a continuacion lo eliminaré\n\nEl canal es {canal}")
+        if bot.get_chat_member(canal, bot.user.id).status=='left':
+          bot.send_message(reima, f"Me expulsaron de @{bot.get_chat(canal).username}, lo eliminaré de la botonera")
           cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+          conexion.commit()
           try:
-            bot.send_message(administrador, "Al parecer me has eliminado de tu canal, lo eliminarré de mi lista de canales")
+            bot.send_message(administrador, f"Su canal @{bot.get_chat(canal).username}, ha sido eliminado de la botonera por haberme expulsado\n\nPara Introducirlo nuevamente agregueme como administrador e ingrese aquí /ingresar \n\nTe estaré esperando :)")
           except:
-            continue
-        elif not member.status == 'administrator' and str(administrador) != str(1413725506):
+            pass
+        elif not bot.get_chat_member(chat_id=canal, user_id=bot.user.id).status == 'administrator' and str(administrador) != str(1413725506):
           cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+          conexion.commit()
           bot.send_message(
               1413725506,
               f"Se ha eliminado el canal {bot.get_chat(canal).username} por no dejarme como administrador >:("
@@ -1384,12 +1421,24 @@ try:
               administrador,
               f"<u>ATENCIÓN</u>:\n Se ha eliminado el canal {bot.get_chat(canal).username} por no dejarme como administrador >:(\n\nPara ingresar de nuevo el canal en la botonera escriba /ingresar",
               parse_mode="html")
-        else:
-          bot.send_message(reima, f"Ha ocurrido el siguiente error:\n\n{e}\n\nSe eliminará el canal: {canal}")
-          cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
 
-    conexion.commit()
-    #Ahora pondré los canales de la BD a una lista
+      except Exception as e:
+        if "chat not found" in str(e):
+          bot.send_message(reima, f"Me han eliminado de un canal, iré a notificarle a su administrador y a continuacion lo eliminaré\n\nEl canal es {canal}")
+          cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+          conexion.commit()
+          try:
+            bot.send_message(administrador, "Al parecer me has eliminado de tu canal, lo eliminarré de mi lista de canales")
+          except:
+            continue
+
+        else:
+          bot.send_message(reima, f"Ha ocurrido el siguiente error:\n\n{e}\n\nSe eliminará el canal: {canal}\nSu administrador es @{bot.get_chat(administrador).username}")
+          cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
+          conexion.commit()
+
+    
+    #Ahora pondré los canales de la BD a una lista para comenzar a recorrerla
     cursor.execute('SELECT * FROM Canales')
     lista_canales = cursor.fetchall()
     for linea in lista_canales:
@@ -1484,13 +1533,6 @@ try:
 except Exception as e:
   bot.send_message(reima, f"Se ha producido un error en el bot:\n\n{e}")
   pass
-
-#----------------------------Servidor de Flask------------------------------------
-
-
-
-
-
 
 
 
