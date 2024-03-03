@@ -483,9 +483,12 @@ try:
                     f"<u>ATENCIÓN</u>:\n Se ha eliminado el canal @{bot.get_chat(canal).username} por no dejarme como administrador >:(\n\nPara ingresar de nuevo el canal en la botonera escriba /ingresar",
                     parse_mode="html")
             else:
-              bot.send_message(reima, f"Ha ocurrido un error con el canal @{bot.get_chat(canal).username}:\n\n{e}\n\nProcedo a eliminarlo\nInformale a su administrador: @{bot.get_chat(administrador).username}")
-              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={linea[0]}')
+              cursor.execute(f'DELETE FROM Canales WHERE ID_Canal={canal}')
               conexion.commit()
+              try:
+                bot.send_message(reima, f"Ha ocurrido el siguiente error:\n\n{e}\n\nSe eliminará el canal: {canal}\nSu administrador es @{bot.get_chat(administrador).username}")
+              except Exception as ex:
+                bot.send_message(reima, f"Excepcion en un canal: {ex}")
 
         #Ahora actualizaré la lista con los canales de la BD
         cursor.execute('SELECT * FROM Canales')
