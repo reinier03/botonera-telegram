@@ -38,7 +38,7 @@ try:
   directorio_actual=f"{os.path.dirname(os.path.abspath(__file__))}{OS}"
   reima = 1413725506
   bot = telebot.TeleBot(os.environ["token"])
-  admin=os.environ["admin"]
+  admin=int(os.environ["admin"])
   dic = {}
   hora_publicacion = []
   tiempo_de_espera_botonera = 10800  #Por defecto, tiene asignado 3 horas
