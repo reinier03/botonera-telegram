@@ -491,7 +491,7 @@ try:
                     parse_mode="html",
                     reply_markup=botonera)
               else:
-                msg = bot.send_message(int(canal), mensajes_dic["/mostrar"], parse_mode="MarkdownV2", reply_markup=botonera)
+                msg = bot.send_message(int(canal), mensajes_dic["/mostrar"], parse_mode="html", reply_markup=botonera)
             else:
               #Si el usuario no ha personalizado el mensaje, entonces haz esto
               if mensajes_dic["/mostrar"]== "":
@@ -504,7 +504,7 @@ try:
                     reply_markup=botonera) #Editar texto
               #Si lo personalizó entonces haz esto
               else:
-                msg = bot.send_photo(int(canal), photo=foto_botonera, caption=mensajes_dic["/mostrar"], parse_mode="MarkdownV2", reply_markup=botonera)
+                msg = bot.send_photo(int(canal), photo=foto_botonera, caption=mensajes_dic["/mostrar"], parse_mode="html", reply_markup=botonera)
             try:
               bot.pin_chat_message(int(canal), msg.message_id, disable_notification=True)
               time.sleep(3)
@@ -910,12 +910,12 @@ try:
       if tiempo_eliminacion_botonera:
         msg = bot.send_message(
             call.from_user.id,
-            f"Introduce el tiempo (EN MINUTOS) que quieres que quieres que la botonera sea eliminada\n\nSi quieres que se elimine cada vez que una nueva publicación de dicha botonera se haga escribe cualquier otra cosa\n\nTu tiempo actual de eliminacion es de {tiempo_eliminacion_botonera//60} minuto(s)",
+            f"Introduce el tiempo (EN MINUTOS) que quieres que quieres que la botonera sea eliminada\n\nSi quieres que se elimine cada vez que una nueva publicación de dicha botonera se haga escribe letras a continuación en lugar de números\n\nTu tiempo actual de eliminacion es de {tiempo_eliminacion_botonera//60} minuto(s)",
             reply_markup=ForceReply())
       else:
         msg = bot.send_message(
             call.from_user.id,
-            "Introduce el tiempo (EN MINUTOS) que quieres que quieres que la botonera sea eliminada\n\nSi quieres que se elimine cada vez que una nueva publicación de dicha botonera se haga escribe cualquier otra cosa",
+            "Introduce el tiempo (EN MINUTOS) que quieres que quieres que la botonera sea eliminada\n\nSi quieres que se elimine cada vez que una nueva publicación de dicha botonera se haga escribe letras a continuación en lugar de números",
             reply_markup=ForceReply())
 
       def eliminacion(message):
@@ -996,7 +996,6 @@ try:
           foto_botonera=open(f"{os.path.dirname(os.path.abspath(__file__))}{OS}botonera.jpg", "rb")
           
           bot.send_message(call.from_user.id, "¡Foto Promocional guardada exitosamente! :)")
-          bot.send_message(call.from_user.id, f"Hola {bot.get_chat(admin).first_name} ;) En que te puedo ayudar", reply_markup=botonera_panel)
           return
         
         
@@ -1005,26 +1004,16 @@ try:
     
     elif call.data == "Promo":
       if mensajes_dic["/mostrar"] == "":
-        msg=bot.send_message(call.from_user.id,"<u>El mensaje en cuestión, es el siguiente</u>:\n\nA continuación, Los Canales de la <b>MEJOR Botonera</b> de Telegram 😀🎉", parse_mode="html", reply_markup=markup)
+        bot.send_message(call.from_user.id,"<u>El mensaje en cuestión, es el siguiente</u>:\n\nA continuación, Los Canales de la <b>MEJOR Botonera</b> de Telegram 😀🎉", parse_mode="html", reply_markup=markup)
       else:
-        msg=bot.send_message(call.from_user.id,f"__El mensaje en cuestión, es el siguiente__:\n\{mensajes_dic['/mostrar']}", parse_mode="MarkdownV2", reply_markup=markup)
+        msg=bot.send_message(call.from_user.id,f"<u>El mensaje en cuestión, es el siguiente</u>:\n\n{mensajes_dic['/mostrar']}", parse_mode="html", reply_markup=markup)
         
-      bot.send_message(call.from_user.id, 
-                            """A Continuación te dejaré una guía de estilos con sus códigos para escribir mejor, a la izquierda de cada fila está el resultado y el nombre del estilo y a la derecha está el código que debes introducir para generar el mismo resultado
-                            <u>Subrayado</u> : __texto en subrayado__
-                            <b>Negrita</b> : *texto en negrita*
-                            <i>Cursiva</i> : _texto en cursiva_
-                            <s>Tachado</>  : ~texto en tachado~
-                            <code>Monoespaciado</code> : '''Texto en monoespaciado'''
-                            <span class='tg-spoiler'>Spoiler</span> : |||Texto en Spoiler|||
-                            <a href='https://google.com'>Enlace</a> : [Texto con Enlace](https://google.com)""", parse_mode="html")
-      msg2=bot.send_message(call.from_user.id, "Seguido de este mensaje escriba un nuevo mensaje Promocional :)\n\nPresione en el botón <b>Cancelar</b> para dejar el que ya está", parse_mode="html", reply_markup=cancelar_markup)
+      msg2=bot.send_message(call.from_user.id, "Seguido de este mensaje escriba un nuevo mensaje Promocional :)")
+      
+      
       def nuevo_mensaje_promo(message):
-        if message.text.lower() == "cancelar":
-          bot.send_message(message.chat.id, f"Entendido {bot.get_chat(admin).first_name} ;) Dejaré el mensaje anterior intacto")
-          return
-        mensajes_dic["/mostrar"]=message.text
-        bot.send_message(message.chat.id, f"Perfecto\nEl nuevo mensaje será:\n\n{mensajes_dic['/mostrar']}", parse_mode="MarkdownV2")
+        mensajes_dic['/mostrar']=message.text
+        bot.send_message(message.chat.id, f"Perfecto\nEl nuevo mensaje será:\n\n{mensajes_dic['/mostrar']}", parse_mode="html")
         guardar_variables()
         return
       
@@ -1037,31 +1026,12 @@ try:
       if mensajes_dic["/start"] == "":
         msg=bot.send_message(call.from_user.id, f"<u>El mensaje en cuestión, es el siguiente</u>:\n\nHola!😁, Bienvenido a la botonera más genial de Telegram. Los comandos disponibles (por ahora) son:\n\n/mostrar Si quiere SOLICITAR los CANALES de la Botonera e <b>Información</b> sobre el tiempo restante de la PRÓXIMA PUBLICACIÓN de dicha botonera y sus CANALES afiliados\n\n/ingresar Si quiere INGRESAR su CANAL EN la BOTONERA\n\n/eliminar Para borrar su canal de la botonera :(\n\n/start o /help Para mostrar ESTE mensaje de ayuda\n\n\n\n<u>Nota:</u>\nSi quiere notificar algo del bot o tiene alguna duda consulte con mi guapetón propietario ( ͡° ͜ʖ ͡°)\n\n👉<a href='https://t.me/{bot.get_chat(admin).username}'>{bot.get_chat(admin).first_name}</a>👈",parse_mode="html", disable_web_page_preview=True, reply_markup=markup)
       else:
-        bot.send_message(call.from_user.id, f"__El mensaje en cuestión, es el siguiente__:\n\n{mensajes_dic['/start']}", parse_mode="MarkdownV2", reply_markup=markup)
-        
-      bot.send_message(call.from_user.id, 
-                            """A Continuación te dejaré una guía de estilos con sus códigos para escribir mejor, a la izquierda de cada fila está el resultado y el nombre del estilo y a la derecha está el código que debes introducir para generar el mismo resultado
-                            <u>Subrayado</u> : 
-                            __texto en subrayado__
-                            <b>Negrita</b> : 
-                            *texto en negrita*
-                            <i>Cursiva</i> : 
-                            _texto en cursiva_
-                            <s>Tachado</>  : 
-                            ~texto en tachado~
-                            <code>Monoespaciado</code> : 
-                            '''Texto en monoespaciado'''
-                            <span class='tg-spoiler'>Spoiler</span> : 
-                            |||Texto en Spoiler|||
-                            <a href='https://google.com'>Enlace</a> : 
-                            [Texto con Enlace](https://google.com)""", parse_mode="html")
-      msg2=bot.send_message(call.from_user.id, "Seguido de este mensaje escriba una nueva Bienvenida :)\n\nPresione <b>Cancelar</b> para dejar el que ya está", parse_mode="html", reply_markup=cancelar_markup)
+        bot.send_message(call.from_user.id, f"<u>El mensaje en cuestión, es el siguiente</u>:\n\n{mensajes_dic['/start']}", parse_mode="html", reply_markup=markup)
+      
+      msg2=bot.send_message(call.from_user.id, "Seguido de este mensaje escriba una nueva Bienvenida :)", parse_mode="html")
       def nuevo_mensaje_bienvenida(message):
-        if message.text.lower() == "cancelar":
-          bot.send_message(message.chat.id, f"Entendido {bot.get_chat(admin).first_name} ;) Dejaré el mensaje anterior intacto")
-          return
         mensajes_dic["/start"]=message.text
-        bot.send_message(message.chat.id, f"Perfecto\nEl nuevo mensaje será:\n\n{mensajes_dic['/start']}", parse_mode="MarkdownV2")
+        bot.send_message(message.chat.id, f"Perfecto\nEl nuevo mensaje será:\n\n{mensajes_dic['/start']}", parse_mode="html")
         guardar_variables()
         return
       
@@ -1149,7 +1119,7 @@ try:
                             f"Ha ocurrido una excepción:\n\n{e}")
       
     elif call.data == "Recibir BD":
-      msg = bot.send_message(call.from_user.id, "Muy bien, a continuación de este mensaje, envíeme el archivo Botonera_Canales.bd que ya le proporcioné\n\n<u>ATENCIÓN:</u>\n¡Tenga en cuenta que para hacer este proceso necesito pausar el hilo de publicaciones de la botonera!\nPresione en 'Cancelar Operación' si prefiere no hacerlo por ahora", parse_mode="html" ,reply_markup=cancelar_markup)
+      msg = bot.send_message(call.from_user.id, "Muy bien, a continuación de este mensaje, envíeme el archivo Botonera_Canales.bd que ya le proporcioné\n\n<u>ATENCIÓN:</u>\n¡Tenga en cuenta que para hacer este proceso necesito pausar el hilo de publicaciones de la botonera!", parse_mode="html")
       
       
       def recibir_bd(message):
@@ -1465,7 +1435,7 @@ try:
           message.chat.id,
           f"Hola! 😁, Bienvenido a la botonera más genial de Telegram. Los comandos disponibles (por ahora) son:\n\n/mostrar Si quiere SOLICITAR los CANALES de la Botonera e <b>Información</b> sobre el tiempo restante de la PRÓXIMA PUBLICACIÓN de dicha botonera y sus CANALES afiliados\n\n/ingresar Si quiere INGRESAR su CANAL EN la BOTONERA\n\n/eliminar Para borrar su canal de la botonera :(\n\n/start o /help Para mostrar ESTE mensaje de ayuda\n\n\n\n<u>Nota:</u>\nSi quiere notificar algo del bot o tiene alguna duda consulte con mi guapetón propietario ( ͡° ͜ʖ ͡°)\n\n👉<a href='https://t.me/{bot.get_chat(admin).username}'>{bot.get_chat(admin).first_name}</a>👈", parse_mode="html", disable_web_page_preview=True) #Editar texto
     else:
-      bot.send_message(message.chat.id, mensajes_dic["/start"], parse_mode="MarkdownV2", disable_web_page_preview=True)
+      bot.send_message(message.chat.id, mensajes_dic["/start"], parse_mode="html", disable_web_page_preview=True)
 
     bot.send_message(message.chat.id, f"Este Bot fué creado por @{bot.get_chat(reima).username}")
     canal = "no"
@@ -1728,7 +1698,7 @@ try:
         if mensajes_dic["/mostrar"]== "":
           bot.send_message(message.chat.id,"A continuación, Los Canales de la <b>MEJOR Botonera</b> de Telegram 😀🎉", parse_mode="html", reply_markup=botonera)
         else:
-          bot.send_message(message.chat.id, mensajes_dic["/mostrar"], parse_mode="MarkdownV2", reply_markup=botonera)
+          bot.send_message(message.chat.id, mensajes_dic["/mostrar"], parse_mode="html", reply_markup=botonera)
       #Si tiene una foto entonces...
       else:
         #Si el usuario no ha personalizado el mensaje, entonces haz esto
