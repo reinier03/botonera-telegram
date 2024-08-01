@@ -396,28 +396,28 @@ try:
               if "chat not found" in str(e):
                 bot.send_message(admin, f"Fuí expulsado del canal @{bot.get_chat(canal).username}\n\nLo eliminaré de la botonera")
                 try:
-                    bot.send_message(administrador, f"He eliminado tu canal @{bot.get_chat(canal).username} de la botonera >:( Por haberme sacado\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo")
+                  bot.send_message(administrador, f"He eliminado tu canal @{canal_username} de la botonera >:( Por haberme sacado\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo")
                 except:
                     pass
               
               elif "bot was kicked from the channel chat" in str(e):
-                bot.send_message(admin, f"Al parecer me han eliminado del canal: @{bot.get_chat(canal).username}, procedo a eliminarlo")
+                bot.send_message(admin, f"Al parecer me han eliminado del canal: @{canal_username}, procedo a eliminarlo")
                 try:
-                  bot.send_message(administrador, f"Al parecer me han eliminado del canal: @{bot.get_chat(canal).username}\nEliminaré dicho canal de la botonera\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo\n\nTe estaré esperando :)")
+                  bot.send_message(administrador, f"Al parecer me han eliminado del canal: @{canal_username}\nEliminaré dicho canal de la botonera\n\nVuelve a unirme a él como admin con derechos y regresa aquí escribiendome /ingresar para unirte de nuevo\n\nTe estaré esperando :)")
                 except:
                   pass
                 
                 
               else:
                 try:
-                  bot.send_message(admin, f"Ha ocurrido el siguiente error:\n\n{e}\n\nSe eliminará el canal: @{bot.get_chat(canal).username}\nSu administrador es @{bot.get_chat(administrador).username}")
+                  bot.send_message(admin, f"Ha ocurrido el siguiente error:\n\n{e}\n\nSe eliminará el canal: @{canal_username}\nSu administrador es @{bot.get_chat(administrador).username}")
                 except Exception as ex:
                   try:
-                    bot.send_message(admin, f"Excepción en el canal: @{bot.get_chat(canal).username} \n\n{ex}\n\n Lo he eliminado")
+                    bot.send_message(admin, f"Excepción en el canal: @{canal_username} \n\n{ex}\n\n Lo he eliminado")
                   except:
                     bot.send_message(admin, f"Excepción en un canal: \n\n{ex}\n\n Lo he eliminado")
                 try:
-                  bot.send_message(administrador, f"Ha ocurrido un error, se eliminará tu canal @{bot.get_chat(canal).username}\n\nRevisa que tu canal me tenga concedido derechos administrativos así como también para publicar, cuando arregles el problema vuelve a escribirme /ingresar \n\nTe estaré esperando :)")
+                  bot.send_message(administrador, f"Ha ocurrido un error, se eliminará tu canal @{canal_username}\n\nRevisa que tu canal me tenga concedido derechos administrativos así como también para publicar, cuando arregles el problema vuelve a escribirme /ingresar \n\nTe estaré esperando :)")
                 except:
                   pass
                 
@@ -1037,7 +1037,7 @@ try:
       if mensajes_dic["/start"] == "":
         msg=bot.send_message(call.from_user.id, f"<u>El mensaje en cuestión, es el siguiente</u>:\n\nHola!😁, Bienvenido a la botonera más genial de Telegram. Los comandos disponibles (por ahora) son:\n\n/mostrar Si quiere SOLICITAR los CANALES de la Botonera e <b>Información</b> sobre el tiempo restante de la PRÓXIMA PUBLICACIÓN de dicha botonera y sus CANALES afiliados\n\n/ingresar Si quiere INGRESAR su CANAL EN la BOTONERA\n\n/eliminar Para borrar su canal de la botonera :(\n\n/start o /help Para mostrar ESTE mensaje de ayuda\n\n\n\n<u>Nota:</u>\nSi quiere notificar algo del bot o tiene alguna duda consulte con mi guapetón propietario ( ͡° ͜ʖ ͡°)\n\n👉<a href='https://t.me/{bot.get_chat(admin).username}'>{bot.get_chat(admin).first_name}</a>👈",parse_mode="html", disable_web_page_preview=True, reply_markup=markup)
       else:
-        bot.send_message(call.from_user.id, f"__El mensaje en cuestión, es el siguiente__:\n\{mensajes_dic['/start']}", parse_mode="MarkdownV2", reply_markup=markup)
+        bot.send_message(call.from_user.id, f"__El mensaje en cuestión, es el siguiente__:\n\n{mensajes_dic['/start']}", parse_mode="MarkdownV2", reply_markup=markup)
         
       bot.send_message(call.from_user.id, 
                             """A Continuación te dejaré una guía de estilos con sus códigos para escribir mejor, a la izquierda de cada fila está el resultado y el nombre del estilo y a la derecha está el código que debes introducir para generar el mismo resultado
