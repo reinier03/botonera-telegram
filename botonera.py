@@ -336,9 +336,7 @@ try:
     while ejecutar_hilo:
       if publicaciones == False or time.localtime(
           hora_publicacion[0] + tiempo_de_espera_botonera) <= time.localtime():
-        if mensajes_a_eliminar == []:
-          pass
-        else:
+        if not len(mensajes_a_eliminar) == 0:
           for item in mensajes_a_eliminar:
             try:
               bot.delete_message(item[0], item[1])
@@ -348,6 +346,7 @@ try:
                 a = "lol"
               except:
                 pass
+
 
           mensajes_a_eliminar = []
         try:
